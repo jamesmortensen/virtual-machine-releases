@@ -15,10 +15,11 @@ jobs:
     - name: Extract client payload tarball
       if: ${{ github.event_name == 'repository_dispatch' }}
       run: |
+        mkdir tmp && cd tmp
         echo $BASE64_FILE_CONTENTS > virtual-machine.tar.gz.base64
         base64 -d virtual-machine.tar.gz.base64 > virtual-machine.tar.gz
-        mkdir tmp && cd tmp
         tar xvfz virtual-machine.tar.gz
         ls -ltrSha
+        ls -ltrSha debian-11.3-armhf-ci/
 
         
