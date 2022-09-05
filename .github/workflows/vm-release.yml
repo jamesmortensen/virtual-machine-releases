@@ -16,7 +16,7 @@ jobs:
       if: ${{ github.event_name == 'repository_dispatch' }}
       run: |
         echo $BASE64_FILE_CONTENTS > virtual-machine.tar.gz.base64
-        base64 -d virtual-machine.tar.gz.b64 > virtual-machine.tar.gz
+        base64 -d virtual-machine.tar.gz.base64 > virtual-machine.tar.gz
         mkdir tmp && cd tmp
         tar xvfz virtual-machine.tar.gz
         ls -ltrSha
