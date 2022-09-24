@@ -1,4 +1,4 @@
-# debian-11.3-armhf-ci-v1.0
+# debian-11.3-armhf-ci-v1.1
 
 This virtual machine is used to test Docker container images built for armhf (armv7l) on either GitHub Actions or CircleCI. 
 
@@ -33,3 +33,13 @@ Docker CLI on the host now connects to an armhf Docker Engine. However, we must 
 ```
 $ ssh -p 8022 debianhf@127.0.0.1 -N -f -L4444:127.0.0.1:4444 -L5555:127.0.0.1:5555
 ```
+
+## Additional Information
+
+There are a few new helper scripts:
+
+- connect-ssh.sh - SSH into the VM.
+- connect-tunnel.sh - Create an SSH tunnel between the host Docker CLI and the VM Docker Engine.
+- start-vm-aarch64.sh - Start the VM using aarch64 instead of arm.
+
+
