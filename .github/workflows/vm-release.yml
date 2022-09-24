@@ -72,11 +72,12 @@ jobs:
         echo "curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME && tar xvfJ $ARTIFACT_FILENAME *.qcow2" > $VM_FOLDERNAME/download-vm.sh
     - name: Commit/push files to repository
       run: |
-        git config advice.addIgnoredFile false
+        git config user.email "111365622+commitly[bot]@users.noreply.github.com"
+        git config user.name "commitly-bot[bot]"
         git add $VM_FOLDERNAME/download-vm.sh
         #git add $VM_FOLDERNAME/*
         git add .
         git status
-        git commit -am "Updating VM $VM_TAG"
+        git commit -m "$VM_TAG: Updating VM"
         #git push origin master
         
