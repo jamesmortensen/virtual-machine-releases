@@ -34,13 +34,17 @@ jobs:
         echo "VM_FOLDERNAME=$(cat /tmp/VM_FOLDERNAME)" >> $GITHUB_ENV
         cat /tmp/VM_VERSION && cat /tmp/VM_FOLDERNAME
         rm /tmp/VM_VERSION && rm /tmp/VM_FOLDERNAME
+    - name: Generate REPO environment variable
+      run: |
+        REPO=`echo $GITHUB_REPOSITORY | tr '/' '\n' | tail -n 1`
+        echo "REPO=$REPO" >> $GITHUB_ENV
     - name: Install dependencies
       run: go install github.com/github-release/github-release@v0.10.0
     - name: Validate that the artifact exists
       run: |
         ARTIFACT_FILENAME=`~/go/bin/github-release info \
-          -u jamesmortensen \
-          -r virtual-machine-releases \
+          -u $GITHUB_REPOSITORY_OWNER \
+          -r $REPO \
           --tag $VM_TAG | grep artifact | awk '{print $3}' | sed 's/,$//g'`
         if [ "$ARTIFACT_FILENAME" == "$VM_TAG.tar.xz" ]; then
           echo "Artifact found...proceed to download..."
@@ -48,8 +52,8 @@ jobs:
         else
           echo "Artifact not found...exiting..."
           ~/go/bin/github-release info \
-            -u jamesmortensen \
-            -r virtual-machine-releases \
+            -u $GITHUB_REPOSITORY_OWNER \
+            -r $REPO \
             --tag $VM_TAG
           exit 1
         fi
@@ -57,7 +61,7 @@ jobs:
       working-directory: /tmp
       run: |
         curl \
-          -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME \
+          -L https://github.com/$GITHUB_REPOSITORY/releases/download/$VM_TAG/$ARTIFACT_FILENAME \
           -o $ARTIFACT_FILENAME
         tar xvfJ $ARTIFACT_FILENAME
         ls -ltrSha
@@ -71,7 +75,7 @@ jobs:
         cp -pr /tmp/$VM_FOLDERNAME/* $VM_FOLDERNAME/
     - name: Create Download Script
       run: |
-        echo "curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME && tar xvfJ $ARTIFACT_FILENAME *.qcow2" > $VM_FOLDERNAME/download-vm.sh
+        echo "curl -L https://github.com/$GITHUB_REPOSITORY/releases/download/$VM_TAG/$ARTIFACT_FILENAME -o $ARTIFACT_FILENAME && tar xvfJ $ARTIFACT_FILENAME *.qcow2" > $VM_FOLDERNAME/download-vm.sh
     - name: Commit/push files to repository
       run: |
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
