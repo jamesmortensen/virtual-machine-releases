@@ -74,7 +74,8 @@ jobs:
       run: |
         git config advice.addIgnoredFile false
         git add $VM_FOLDERNAME/download-vm.sh
-        git add $VM_FOLDERNAME/*
+        #git add $VM_FOLDERNAME/*
+        git add .
         git status
         git commit -am "Updating VM $VM_TAG"
         #git push origin master
