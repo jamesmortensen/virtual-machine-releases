@@ -1,0 +1,5 @@
+# do not commit binary files
+*.img
+*.qcow2
+*.fd
+
