@@ -17,7 +17,7 @@ jobs:
       run: go install github.com/github-release/github-release@v0.10.0
     - name: Validate that the artifact exists
       run: |
-        ARTIFACT_FILENAME=`github-release info \
+        ARTIFACT_FILENAME=`~/go/bin/github-release info \
           -u jamesmortensen \
           -r virtual-machine-releases \
           --tag $VM_TAG | grep artifact | awk '{print $3}' | sed 's/,$//g'`
@@ -25,7 +25,7 @@ jobs:
           echo "Artifact found...proceed to download..."
         else
           echo "Artifact not found...exiting..."
-          github-release info \
+          ~/go/bin/github-release info \
             -u jamesmortensen \
             -r virtual-machine-releases \
             --tag $VM_TAG
