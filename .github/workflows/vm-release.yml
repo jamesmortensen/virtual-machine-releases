@@ -21,6 +21,7 @@ jobs:
           const last = parts.length - 1;
           console.log(parts[last]);
         "`
+        echo "version="$VM_VERSION
         echo "next..."
         echo "VM_VERSION=$VM_VERSION" >> $GITHUB_ENV
         VM_FOLDERNAME=`node -p "
