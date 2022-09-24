@@ -34,7 +34,9 @@ jobs:
         fi
     - name: Download and extract the artifact
       run: |
-        curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME
+        curl \
+          -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME \
+          -o $ARTIFACT_FILENAME
         tar xvfJ $ARTIFACT_FILENAME
         ls -ltrSha
         
