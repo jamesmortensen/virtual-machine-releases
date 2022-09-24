@@ -23,6 +23,7 @@ jobs:
           --tag $VM_TAG | grep artifact | awk '{print $3}' | sed 's/,$//g'`
         if [ "$ARTIFACT_FILENAME" == "$VM_TAG.tar.xz" ]; then
           echo "Artifact found...proceed to download..."
+          echo "ARTIFACT_FILENAME=$ARTIFACT_FILENAME" >> $GITHUB_ENV
         else
           echo "Artifact not found...exiting..."
           ~/go/bin/github-release info \
@@ -31,9 +32,9 @@ jobs:
             --tag $VM_TAG
           exit 1
         fi
-    - name: Download the artifact
+    - name: Download and extract the artifact
       run: |
-        curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG.tar.gz
-        tar xvfz $VM_TAG.tar.gz
+        curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME
+        tar xvfJ $ARTIFACT_FILENAME
         ls -ltrSha
         
