@@ -2,24 +2,36 @@ name: Docker Image CI
 
 on:
   repository_dispatch:
-  release:
-    types: [published]
+#   release:
+#     types: [published]
 
 jobs:
-  build:
+  release_vm:
+    if: ${{ github.event_name == 'repository_dispatch' }}
     runs-on: ubuntu-latest
     env:
-      VM_VERSION: ${{ github.event.client_payload.version }}
-      BASE64_FILE_CONTENTS: ${{ github.event.client_payload.base64_file_contents }}
+      VM_TAG: ${{ github.event.client_payload.tag }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-    - name: Extract client payload tarball
-      if: ${{ github.event_name == 'repository_dispatch' }}
+    - name: Validate that the artifact exists
       run: |
-        mkdir tmp && cd tmp
-        echo $BASE64_FILE_CONTENTS > virtual-machine.tar.gz.base64
-        base64 -d virtual-machine.tar.gz.base64 > virtual-machine.tar.gz
-        tar xvfz virtual-machine.tar.gz
+        ARTIFACT_FILENAME=`github-release info \
+          -u jamesmortensen \
+          -r virtual-machine-releases \
+          --tag $VM_TAG | grep artifact | awk '{print $3}' | sed 's/,$//g'`
+        if [ "$ARTIFACT_FILENAME" == "$VM_TAG.tar.xz" ]; then
+          echo "Artifact found...proceed to download..."
+        else
+          echo "Artifact not found...exiting..."
+          github-release info \
+            -u jamesmortensen \
+            -r virtual-machine-releases \
+            --tag $VM_TAG
+          exit 1
+        fi
+    - name: Download the artifact
+      run: |
+        curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG.tar.gz
+        tar xvfz $VM_TAG.tar.gz
         ls -ltrSha
-        ls -ltrSha debian-11.3-armhf-ci/
-
         
