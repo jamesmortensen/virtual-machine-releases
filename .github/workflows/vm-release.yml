@@ -13,6 +13,8 @@ jobs:
       VM_TAG: ${{ github.event.client_payload.tag }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+    - name: Install dependencies
+      run: go install github.com/github-release/github-release@v0.10.0
     - name: Validate that the artifact exists
       run: |
         ARTIFACT_FILENAME=`github-release info \
