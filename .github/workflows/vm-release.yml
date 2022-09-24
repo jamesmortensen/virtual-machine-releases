@@ -13,6 +13,22 @@ jobs:
       VM_TAG: ${{ github.event.client_payload.tag }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+    - name: Get the VM_FOLDERNAME and VM_VERSION number
+      run: |
+        echo $VM_TAG
+        VM_VERSION=`node -p "
+          const parts = process.env.VM_TAG.split('-');
+          const last = parts.length - 1;
+          console.log(parts[last]);
+        "`
+        echo "next..."
+        echo "VM_VERSION=$VM_VERSION" >> $GITHUB_ENV
+        VM_FOLDERNAME=`node -p "
+          const parts = process.env.VM_TAG.split('-');
+          const last = parts.length - 1;
+          console.log(process.env.VM_TAG.replace('-'+parts[last],''));
+        "`
+        echo "VM_FOLDERNAME=$VM_FOLDERNAME" >> $GITHUB_ENV
     - name: Install dependencies
       run: go install github.com/github-release/github-release@v0.10.0
     - name: Validate that the artifact exists
