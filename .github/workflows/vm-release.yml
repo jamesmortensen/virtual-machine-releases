@@ -61,6 +61,9 @@ jobs:
         ls -ltrSha
     - name: Copy the extracted files from the /tmp folder to the VM folder
       run: |
+        echo "Foldername = "$VM_FOLDERNAME
+        ls -ltrSha
+        pwd
         cp -pr /tmp/$VM_FOLDERNAME/* $VM_FOLDERNAME/
     - name: Create Download Script
       run: |
