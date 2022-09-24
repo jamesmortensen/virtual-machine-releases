@@ -52,7 +52,7 @@ jobs:
           const parts = process.env.VM_TAG.split('-');
           const last = parts.length - 1;
           console.log(process.env.VM_TAG.replace('-'+parts[last],''));
-        "
+        "`
         echo "VM_FOLDERNAME=$VM_FOLDERNAME" >> $GITHUB_ENV
     - name: Copy the extracted files from the /tmp folder to the VM folder
       run: |
