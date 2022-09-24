@@ -72,6 +72,7 @@ jobs:
         echo "curl -L https://github.com/jamesmortensen/virtual-machine-releases/releases/download/$VM_TAG/$ARTIFACT_FILENAME && tar xvfJ $ARTIFACT_FILENAME *.qcow2" > $VM_FOLDERNAME/download-vm.sh
     - name: Commit/push files to repository
       run: |
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         git config user.email "111365622+commitly[bot]@users.noreply.github.com"
         git config user.name "commitly-bot[bot]"
         git add $VM_FOLDERNAME/download-vm.sh
