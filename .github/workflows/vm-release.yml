@@ -78,6 +78,8 @@ jobs:
         #git add $VM_FOLDERNAME/*
         git add .
         git status
+        git checkout -b $VM_TAG
         git commit -m "$VM_TAG: Updating VM"
+        git push origin $VM_TAG
         #git push origin master
         
