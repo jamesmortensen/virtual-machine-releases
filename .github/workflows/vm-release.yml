@@ -59,6 +59,8 @@ jobs:
           -o $ARTIFACT_FILENAME
         tar xvfJ $ARTIFACT_FILENAME
         ls -ltrSha
+    - name: Checkout the repository
+      uses: actions/checkout@v3
     - name: Copy the extracted files from the /tmp folder to the VM folder
       run: |
         echo "Foldername = "$VM_FOLDERNAME
