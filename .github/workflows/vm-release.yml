@@ -88,5 +88,10 @@ jobs:
         git checkout -b $VM_TAG
         git commit -m "$VM_TAG: Updating VM"
         git push origin $VM_TAG
-        #git push origin master
+    - name: Retag the release to point to the commits
+      run: |
+        git tag -d $VM_TAG
+        git push origin --delete $VM_TAG
+        git tag $VM_TAG
+        git push origin $VM_TAG
         
