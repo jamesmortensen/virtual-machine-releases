@@ -13,7 +13,7 @@ jobs:
       contents: write
     env:
       VM_TAG: ${{ github.event.client_payload.tag }}
-      VM_BRANCH: $VM_TAG/vm-updates
+      VM_BRANCH: ${{ github.event.client_payload.tag }}/vm-updates
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Get the VM_FOLDERNAME and VM_VERSION number
