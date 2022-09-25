@@ -96,4 +96,12 @@ jobs:
         git push origin --delete $VM_TAG
         git tag $VM_TAG
         git push origin $VM_TAG
+    - name: Publish the release
+      run: |
+        ~/go/bin/github-release edit \
+          -u $GITHUB_REPOSITORY_OWNER \
+          -r $REPO \
+          --tag $VM_TAG \
+          --name $VM_TAG
+          
         
