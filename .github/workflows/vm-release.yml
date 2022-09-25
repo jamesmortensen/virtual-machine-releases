@@ -91,6 +91,7 @@ jobs:
         git push origin $VM_BRANCH
     - name: Retag the release to point to the commits
       run: |
+        git fetch --tags
         git tag -d $VM_TAG
         git push origin --delete $VM_TAG
         git tag $VM_TAG
