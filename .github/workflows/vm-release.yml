@@ -6,6 +6,26 @@ on:
 #     types: [published]
 
 jobs:
+  create_pre_release:
+    if: ${{ github.event_name == 'repository_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      VM_TAG: ${{ github.event.client_payload.tag }}
+      VM_BRANCH: ${{ github.event.client_payload.tag }}/vm-updates
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - name: Setup GitHub Bot user
+      run: |
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        git config user.email "111365622+commitly[bot]@users.noreply.github.com"
+        git config user.name "commitly-bot[bot]"
+    - name: Create tag on the HEAD and push it so we can create a pre-release
+      run: |
+        git tag $VM_TAG
+        git push origin $VM_TAG
+        
   release_vm:
     if: ${{ github.event_name == 'repository_dispatch' }}
     runs-on: ubuntu-latest
@@ -77,11 +97,13 @@ jobs:
     - name: Create Download Script
       run: |
         echo "curl -L https://github.com/$GITHUB_REPOSITORY/releases/download/$VM_TAG/$ARTIFACT_FILENAME -o $ARTIFACT_FILENAME && tar xvfJ $ARTIFACT_FILENAME *.qcow2" > $VM_FOLDERNAME/download-vm.sh
-    - name: Commit/push files to repository
+    - name: Setup GitHub Bot user
       run: |
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         git config user.email "111365622+commitly[bot]@users.noreply.github.com"
         git config user.name "commitly-bot[bot]"
+    - name: Commit/push files to repository
+      run: |
         git add $VM_FOLDERNAME/download-vm.sh
         #git add $VM_FOLDERNAME/*
         git add .
