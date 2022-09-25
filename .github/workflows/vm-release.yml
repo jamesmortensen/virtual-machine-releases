@@ -7,7 +7,7 @@ on:
 
 jobs:
   create_pre_release:
-    if: ${{ github.event_name == 'repository_dispatch' }}
+    if: ${{ github.event_name == 'repository_dispatch' && github.event.event_type == 'create_pre_release' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -27,7 +27,7 @@ jobs:
         git push origin $VM_TAG
         
   release_vm:
-    if: ${{ github.event_name == 'repository_dispatch' }}
+    if: ${{ github.event_name == 'repository_dispatch' && github.event.event_type == 'release_vm' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
