@@ -21,8 +21,8 @@ jobs:
     - name: Setup GitHub Bot user
       run: |
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        git config user.email "111365622+commitly[bot]@users.noreply.github.com"
-        git config user.name "commitly-bot[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
     - name: Create tag on the HEAD and push it so we can create a pre-release
       run: |
         git tag $VM_TAG
@@ -116,8 +116,8 @@ jobs:
     - name: Setup GitHub Bot user
       run: |
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        git config user.email "111365622+commitly[bot]@users.noreply.github.com"
-        git config user.name "commitly-bot[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
     - name: Commit/push files to repository
       run: |
         git add $VM_FOLDERNAME/download-vm.sh
