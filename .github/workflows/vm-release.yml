@@ -27,6 +27,8 @@ jobs:
       run: |
         git tag $VM_TAG
         git push origin $VM_TAG
+    - name: Install dependencies
+      run: go install github.com/github-release/github-release@v0.10.0
     - name: Make it a pre-release so the assets will have an easy-to-parse download link
       run: |
         ~/go/bin/github-release release \
