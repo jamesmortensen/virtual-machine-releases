@@ -26,6 +26,14 @@ jobs:
       run: |
         git tag $VM_TAG
         git push origin $VM_TAG
+    - name: Make it a pre-release so the assets will have an easy-to-parse download link
+      run: |
+        ~/go/bin/github-release release \
+          -u $GITHUB_REPOSITORY_OWNER \
+          -r $REPO \
+          --tag $VM_TAG \
+          --name $VM_TAG \
+          --pre-release
         
   release_vm:
     if: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.job_name == 'release_vm' }}
