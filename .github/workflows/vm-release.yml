@@ -17,6 +17,7 @@ jobs:
       VM_BRANCH: ${{ github.event.client_payload.tag }}/vm-updates
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+    - uses: actions/checkout@v3
     - name: Setup GitHub Bot user
       run: |
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
