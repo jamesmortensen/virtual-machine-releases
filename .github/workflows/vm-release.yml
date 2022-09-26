@@ -29,6 +29,10 @@ jobs:
         git push origin $VM_TAG
     - name: Install dependencies
       run: go install github.com/github-release/github-release@v0.10.0
+    - name: Generate REPO environment variable
+      run: |
+        REPO=`echo $GITHUB_REPOSITORY | tr '/' '\n' | tail -n 1`
+        echo "REPO=$REPO" >> $GITHUB_ENV
     - name: Make it a pre-release so the assets will have an easy-to-parse download link
       run: |
         ~/go/bin/github-release release \
